@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>聊天室</title>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/normalize.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+	<style>
+		html,body{
+			width:100%;
+			height:100%;
+		}		
+		.login,.allChat{
+			display: none;
+		}
+		/* login start */
+		.login{
+			border: 1px solid #ccc;
+			width: 600px;
+			height: 300px;
+			position: absolute;
+			top:50%;
+			left: 50%;
+			margin-left: -300px;
+			margin-top: -150px;
+		}
+		.nick_name{
+			display: table;		
+			position: absolute;
+			top:50%;
+			left: 50%;
+			margin-left: -190px;
+			margin-top: -30px;
+		}
+		.nick_name label,.nick_name #nickname{
+			display: table-cell;
+		    font-size: 14px;
+		    color: #555;
+		    border: 1px solid #ccc;
+		}
+		.nick_name label{			
+		    font-weight: 400;
+		    text-align: center;
+		    background-color: #eee;		
+		    border-right: none;
+		    width: 60px;       
+		}
+		.nick_name #nickname{
+			outline: none;	
+		    padding: 6px 12px;	
+		    width: 320px;
+		    line-height: 25px;
+		    overflow: hidden;
+		}
+		.login form button{			
+			position: absolute;
+			top:50%;
+			left: 50%;
+			margin-left: -30px;			
+			margin-top: 30px;
+			width: 60px;
+			height: 30px;
+			border-radius: 15px;
+			border: none;	
+			cursor: pointer;
+			outline: none;
+			background-color: #428bca;
+			color: #fff;
+		}
+		.login form button:hover{
+			background-color: #3071a9;
+		}
+		.login form .errorNickname{
+			text-align: center;
+			margin-top: 240px;
+			display: none;
+		}
+		/* login end */
+		/* all Chat start */		
+		.allChat{
+			/* display: none; */
+		}
+		/* all Chat end */
+		/* left Chat start */
+		.leftChat{
+			width:80%;
+			position: absolute;
+			top:0px;
+			left:0px;	
+			height:100%;		
+		}		
+		/* header start */
+		.leftChat header{
+			background: rgb(71, 193, 168);			
+			color:#fff;
+			font-size: 16px;
+		}		
+		.leftChat header i,.leftChat header span{
+			line-height: 50px;
+			overflow: hidden;	
+			margin-left: 5px;		
+		}
+		.leftChat header i{
+			margin-left: 30px;
+		}
+		.leftChat header .myNickname{
+			float:right;
+			margin-right: 20px;
+		}
+		/* header end */
+		/* chat content start */
+		.leftChat .chatContent{			
+			height: auto;			
+		    position: absolute;
+		    width: 100%;
+		    top: 50px;
+		    bottom: 120px;
+			overflow-y: auto;
+			-webkit-transform: translate3d(0, 0, 0);
+		}
+		.leftChat .chatContent ul{
+			padding: 15px;
+		}
+		.leftChat .chatContent ul li{
+			font-size: 12px;
+			color:#666;
+			margin-bottom: 15px;
+		}
+		.leftChat .chatContent .cmsg{
+			text-align: center;
+		}
+		.leftChat .chatContent .msg{
+			margin-top:5px;
+			width:80%;
+			word-wrap:break-word;
+			word-break:break-all;
+			*overflow:hidden;
+			color:#333;
+		}
+		.leftChat .chatContent .lmsg{
+			margin-left:10px;
+		}
+		.leftChat .chatContent .rmsg{
+			margin-right: 10px;
+		}
+		.leftChat .chatContent .msg-con{
+			position:relative;
+			padding:8px 10px;
+			display:inline-block;
+			border-radius:3px;
+			font-size:14px;
+			*top:3px;
+		}
+		.leftChat .chatContent .arrow-tl{
+			position:absolute;
+			background:#fff;
+			height:0;
+			width:0;
+			font-size:0;
+			top:0;
+			left:-10px;
+			border-left:10px solid transparent;
+			border-top:10px solid #d1f0ed;
+		}
+		.leftChat .chatContent .arrow-br{
+			position:absolute;
+			background:#fff;
+			height:0;
+			width:0;
+			font-size:0;
+			bottom:0;
+			right:-10px;
+			border-right:10px solid transparent;
+			border-bottom:10px solid #f1effc;
+			*right:-10px;
+			*border-right:10px solid #fff;
+		}
+		/* chat content end */
+
+		/* footer start */
+		.leftChat footer{
+			border-top:1px solid #d9d9d9;
+			position: absolute;
+			bottom: 0px;
+			left: 0px;
+			box-shadow: 0 -1px 5px rgba(0,0,0,0.05);
+			width:100%;
+			z-index: 1000;
+			background: #fff;
+		} 
+		.leftChat footer .text{
+			margin: 0 10px;	
+			height: 80px;
+			overflow: hidden;	
+		}
+		.leftChat footer .text textarea{
+		    width: 100%;
+		    height: 80px;
+		    margin-top: 5px;
+		    padding: 0;
+		    border: 0;
+		    color: #999;
+		    resize: none;
+		    font-size: 14px;
+		    outline: none;			    
+		}
+		.leftChat footer .faceDiv {
+			width: 496px;
+			height: 123px;
+			border-top: 1px solid #ccc;
+			position: absolute;
+			bottom: 40px;
+			left: 10px;
+			background-color: #fff;
+			z-index: 1;
+			display: none;
+		}
+		.leftChat footer .faceDiv>img {
+			border: 1px solid #ccc;
+			float: left;
+			margin-left: -1px;
+			margin-top: -1px;
+			position: relative;
+			width: 24px;
+			height: 24px;
+			padding: 3px 3px 3px 3px;
+			cursor: pointer;
+		}
+		.leftChat footer .faceDiv>img:hover {
+			background-color: #efefef;
+		}
+		.leftChat footer .faceDiv>img:active {
+			padding: 4px 3px 2px 3px;
+		}
+		.leftChat footer .btns{
+			height: 40px;
+			width: 100%;
+			background-color: #fff;
+			border-top: 1px solid #d9d9d9;
+    		box-sizing: border-box;
+    		z-index: 1002;
+		}
+		.leftChat footer .imgBtn {
+		    background-image: url(/images/imgs.png);
+		    background-repeat: no-repeat;
+		    background-position: 0 -13px;
+		    height: 18px;
+		    width: 20px;
+		    cursor: pointer;
+		    display: inline-block;
+		    margin-top: 10px;
+		    margin-left: 10px;
+		}
+		.leftChat footer .imgBtn:active {
+			margin-top: 11px;
+		}
+		.leftChat footer .imgBtn:hover {
+			background-position: 0 -31px
+		}
+		.leftChat footer .btns .btn{
+			position: absolute;
+		    right: 10px;
+		    bottom: 7px;
+		    cursor: pointer;
+		    border: none;
+		    width: 64px;
+		    height: 24px;
+		    border-radius: 4px;
+		    font-size: 14px;			       
+		}
+		/* footer end */
+		/* left Chat end */
+
+		/* right Chat start */
+		.rightChat{
+			width:20%;
+			position: absolute;
+			top:0px;
+			left:80%;
+			border-left: 1px solid #d9d9d9;
+			height:100%;					
+		}
+		.rightChat .rightContent{
+			height: auto;
+			overflow-y: auto;
+			position: absolute;
+			top:30px;
+			bottom: 30px;
+			width: 100%;
+		}
+		.rightChat .rightContent ul li{
+			font-size: 14px;
+			color:#666;
+			line-height: 30px;			
+			border-bottom: 1px dashed #d9d9d9;
+		}
+		.rightChat .rightContent ul .username{
+			text-align: center;
+			cursor: pointer;
+		}
+		/*header, footer start */
+		.rightChat header,.rightChat footer{
+			font-size: 14px;
+			color:#666;
+			line-height: 30px;				
+			width: 100%;
+		}
+		.rightChat header{
+			position:absolute;
+			top:0px;
+			left:0px;
+		}
+		.rightChat header i{
+			margin-right: 10px;
+			margin-left: 10px;
+		}
+		.rightChat footer{
+			border-top:1px solid #d9d9d9;
+			position: absolute;
+			bottom: 0px;
+			left: 0px;
+		}
+		.rightChat footer span{
+			margin-left: 10px;
+		}
+		/*header, footer end */
+		/* right Chat end */
+	</style>
+</head>
+<body>
+	<!-- login start -->
+	<div class="login">
+		<form id="setNickname">
+			<div class="nick_name">
+				<label for="nickname" class="bgCli">昵称</label>
+				<input type="text" id="nickname" placeholder="请输入昵称">
+			</div>			
+			<button type="button" onclick="check()">登陆</button>
+			<p class="errorNickname"></p>
+		</form>		
+	</div>	
+	<!-- login end -->
+	<!-- all Chat start	 -->
+	<div class="allChat">
+		<!-- left Chat start -->
+		<div class="leftChat">
+			<!-- header start		 -->
+			<header class="h50 bgCli">
+				<i class="icon-bubble"></i>
+				<span>聊天内容</span>
+				<span class="myNickname"></span>
+			</header>
+			<!-- header end	 -->
+			<!-- chat content start -->
+			<div class="chatContent">
+				<ul>					
+				</ul>					
+			</div>
+			<!-- chat content end	 -->
+			<!-- footer start -->
+			<footer>
+				<div class="text">
+					<textarea id="content" cols="30" rows="10" placeholder="请输入..." onmousedown="s(event,this)"></textarea>
+				</div>		
+				<div class="btns">			
+					<div class="faceDiv"></div>										
+					<a class="imgBtn" href="javascript:void(0);"></a>
+					<input type="button" class="btn" value="发送" style="color:rgb(255, 255, 255);background:rgb(71, 193, 168);">
+				</div>
+			</footer>
+			<!-- footer end -->
+		</div>	
+		<!-- left Chat end -->
+
+
+		<!-- right Chat start -->
+		<div class="rightChat">
+			<header class="bgCli">
+				<i class="icon-list2"></i>在线用户
+			</header>
+			<!-- user List start -->
+			<div class="rightContent">
+				<ul>					
+				</ul>
+			</div>
+			<!-- user List end -->
+			<!-- count start -->
+			<footer class="bgCli">
+				<span>当前在线：</span><span class="count">1</span><span>人</span>
+			</footer>
+			<!-- count end -->
+		</div>
+		<!-- right Chat end -->
+	</div>
+	<!-- all Chat end -->
+	<!-- script start -->
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/javascripts/jquery.js"></script>	
+	<script type="text/javascript" src="/javascripts/chatSocket.js"></script>
+	<script type="text/javascript">
+		/*
+		textarea设置光标在第一行第一个字符
+		*/
+		function s(e,a)
+		{
+			if ( e && e.preventDefault )
+				e.preventDefault();
+			else 
+				window.event.returnValue=false;
+			a.focus();				
+		}		
+		
+	</script>	
+
+	<script type="text/javascript">		
+		$('.btn').click(function(){
+			if($('#content').val()!=''){
+				socket.emit('say',$('#content').val());			
+				$('#content').val('').focus();	
+			}
+			else{
+				$('#content').attr('placeholder','此处不能为空');
+			}
+					
+		});
+
+		$('#content').keydown(function(e){
+			if(e.keyCode == 13)
+			{
+				if($('#content').val()!=null){
+					socket.emit('say',$('#content').val());			
+					$(this).val("");
+				}
+				else{					
+					$(this).attr('placeholder','此处不能为空');
+				}				
+			}			
+		});
+
+		$('.leftChat footer .imgBtn').click(function(){
+		  	$('.leftChat footer .faceDiv').toggle(300);
+		});	
+
+		var ImgEmotion=[
+		    {faceName:"微笑",facePath:"微笑.gif"},
+			{faceName:"撇嘴",facePath:"撇嘴.gif"},
+			{faceName:"色",facePath:"色.gif"},
+			{faceName:"发呆",facePath:"发呆.gif"},
+			{faceName:"得意",facePath:"得意.gif"},
+			{faceName:"流泪",facePath:"流泪.gif"},
+			{faceName:"害羞",facePath:"害羞.gif"},
+			{faceName:"闭嘴",facePath:"闭嘴.gif"},
+			{faceName:"大哭",facePath:"大哭.gif"},
+			{faceName:"尴尬",facePath:"尴尬.gif"},
+			{faceName:"发怒",facePath:"发怒.gif"},
+			{faceName:"调皮",facePath:"调皮.gif"},
+			{faceName:"龇牙",facePath:"龇牙.gif"},
+			{faceName:"惊讶",facePath:"惊讶.gif"},
+			{faceName:"难过",facePath:"难过.gif"},
+			{faceName:"酷",facePath:"酷.gif"},
+			{faceName:"冷汗",facePath:"冷汗.gif"},
+			{faceName:"抓狂",facePath:"抓狂.gif"},
+			{faceName:"吐",facePath:"吐.gif"},
+			{faceName:"偷笑",facePath:"偷笑.gif"},
+		    {faceName:"可爱",facePath:"可爱.gif"},
+			{faceName:"白眼",facePath:"白眼.gif"},
+			{faceName:"傲慢",facePath:"傲慢.gif"},
+			{faceName:"饥饿",facePath:"饥饿.gif"},
+			{faceName:"困",facePath:"困.gif"},
+			{faceName:"惊恐",facePath:"惊恐.gif"},
+			{faceName:"流汗",facePath:"流汗.gif"},
+			{faceName:"憨笑",facePath:"憨笑.gif"},
+			{faceName:"大兵",facePath:"大兵.gif"},
+			{faceName:"奋斗",facePath:"奋斗.gif"},
+			{faceName:"咒骂",facePath:"咒骂.gif"},
+			{faceName:"疑问",facePath:"疑问.gif"},
+			{faceName:"嘘",facePath:"嘘.gif"},
+			{faceName:"晕",facePath:"晕.gif"},
+			{faceName:"折磨",facePath:"折磨.gif"},
+			{faceName:"衰",facePath:"衰.gif"},
+			{faceName:"骷髅",facePath:"骷髅.gif"},
+			{faceName:"敲打",facePath:"敲打.gif"},
+			{faceName:"再见",facePath:"再见.gif"},
+			{faceName:"擦汗",facePath:"擦汗.gif"},
+			
+			{faceName:"抠鼻",facePath:"抠鼻.gif"},
+			{faceName:"鼓掌",facePath:"鼓掌.gif"},
+			{faceName:"糗大了",facePath:"糗大了.gif"},
+			{faceName:"坏笑",facePath:"坏笑.gif"},
+			{faceName:"左哼哼",facePath:"左哼哼.gif"},
+			{faceName:"右哼哼",facePath:"右哼哼.gif"},
+			{faceName:"哈欠",facePath:"哈欠.gif"},
+			{faceName:"鄙视",facePath:"鄙视.gif"},
+			{faceName:"委屈",facePath:"委屈.gif"},
+			{faceName:"快哭了",facePath:"快哭了.gif"},
+			{faceName:"阴险",facePath:"阴险.gif"},
+			{faceName:"亲亲",facePath:"亲亲.gif"},
+			{faceName:"吓",facePath:"吓.gif"},
+			{faceName:"可怜",facePath:"可怜.gif"},
+			{faceName:"菜刀",facePath:"菜刀.gif"},
+			{faceName:"西瓜",facePath:"西瓜.gif"},
+			{faceName:"啤酒",facePath:"啤酒.gif"},
+			{faceName:"篮球",facePath:"篮球.gif"},
+			{faceName:"乒乓",facePath:"乒乓.gif"},
+			{faceName:"拥抱",facePath:"拥抱.gif"},
+			{faceName:"握手",facePath:"握手.gif"},
+			{faceName:"得意地笑",facePath:"得意地笑.gif"},
+			{faceName:"听音乐",facePath:"听音乐.gif"}
+		];
+	
+
+		for(var i=0;i<ImgEmotion.length;i++){
+			$(".leftChat footer .faceDiv").append("<img title=\""+ImgEmotion[i].faceName+"\" src=\"images/face/"+ImgEmotion[i].facePath+"\" />");
+		}
+
+		$(".leftChat footer .faceDiv>img").click(function (){
+            $('.leftChat footer .faceDiv').toggle(300);
+			$(".leftChat footer textarea").val($(".leftChat footer textarea").val()+"["+$(this).attr("title")+"]");
+			$(".leftChat footer textarea").focus();
+		});
+	</script>
+	<!-- script end -->
+
+</body>
+</html>
