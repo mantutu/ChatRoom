@@ -14,23 +14,20 @@ Server:<br/>
 1. Install Nodejs and Git
 
 2. Download the repository
-
-```
-git clone https://github.com/mantutu/ChatRoom.git
-cd ChatRoom
-```
-
+	```
+	git clone https://github.com/mantutu/ChatRoom.git
+	cd ChatRoom
+	```
 3. Install npm packages
-
-```
-npm install
-```
-
+	```
+	npm install
+	
+	```
 4. Start dev server
-
-```
-npm start
-```
+	```
+	npm start
+	
+	```
 
 ## At the end
 
