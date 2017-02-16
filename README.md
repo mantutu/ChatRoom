@@ -8,7 +8,6 @@ Server:<br/>
 * [Nodejs](https://nodejs.org/en/) + [Express](http://expressjs.com/)
 * [Socket.io](http://socket.io/)
 
-<br/>
 
 ## Usage
 
@@ -34,7 +33,5 @@ npm start
 ```
 
 ## At the end
-
----
 
 If you like this project, please star it and let me know if you want to help or contribute. Thank you.
