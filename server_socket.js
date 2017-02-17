@@ -1,19 +1,20 @@
+// 服务器端
 var io = require('socket.io')();
 var nicknames=[];
 
 io.sockets.on('connection',function(socket){
 	console.log(nicknames);
-	console.log(socket.id + ': connection');	
-	
-	socket.emit('nicknames',nicknames);	
+	console.log(socket.id + ': connection');
 
-	socket.on('nickname',function(data){		
-			nicknames.push(data);
-			socket.nickname=data;		
-			socket.emit('nicknames',nicknames);		
-			socket.broadcast.emit('nicknames',nicknames);
-			console.log(socket.nickname);
-			console.log('nicknames are '+nicknames);
+	socket.emit('nicknames',nicknames);
+
+	socket.on('nickname',function(data){
+		nicknames.push(data);
+		socket.nickname=data;
+		socket.emit('nicknames',nicknames);
+		socket.broadcast.emit('nicknames',nicknames);
+		console.log(socket.nickname);
+		console.log('nicknames are '+nicknames);
 	});
 
 	socket.on('say',function(data){
@@ -35,7 +36,7 @@ io.sockets.on('connection',function(socket){
 
   	socket.on('disconnect',function(){
   		console.log(socket.id + ': disconnect');
-  		
+
   		if(!socket.nickname) return ;
   		if(nicknames.indexOf(socket.nickname) > -1){
   			nicknames.splice(nicknames.indexOf(socket.nickname),1);
