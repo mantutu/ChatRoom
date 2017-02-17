@@ -52,7 +52,7 @@
 	    line-height: 25px;
 	    overflow: hidden;
 		}
-		.login form button{
+		.login button{
 			position: absolute;
 			top:50%;
 			left: 50%;
@@ -67,10 +67,10 @@
 			background-color: #428bca;
 			color: #fff;
 		}
-		.login form button:hover{
+		.login button:hover{
 			background-color: #3071a9;
 		}
-		.login form .errorNickname{
+		.login .errorNickname{
 			text-align: center;
 			margin-top: 240px;
 			display: none;
@@ -330,14 +330,12 @@
 <body>
 	<!-- login start -->
 	<div class="login">
-		<form id="setNickname">
-			<div class="nick_name">
-				<label for="nickname" class="bgCli">昵称</label>
-				<input type="text" id="nickname" placeholder="请输入昵称">
-			</div>
-			<button type="button" onclick="check()">登陆</button>
-			<p class="errorNickname"></p>
-		</form>
+		<div class="nick_name">
+			<label for="nickname" class="bgCli">昵称</label>
+			<input type="text" id="nickname" placeholder="请输入昵称" />
+		</div>
+		<button type="button" onclick="check()">登陆</button>
+		<p class="errorNickname"></p>
 	</div>
 	<!-- login end -->
 	<!-- all Chat start	 -->
@@ -396,7 +394,7 @@
 	<!-- script start -->
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="/javascripts/jquery.js"></script>
-	<script type="text/javascript" src="/javascripts/chatSocket.js"></script>
+	<script type="text/javascript" src="/javascripts/client_socket.js"></script>
 	<script type="text/javascript">
 		/*
 		textarea设置光标在第一行第一个字符
