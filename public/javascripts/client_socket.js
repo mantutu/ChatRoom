@@ -1,14 +1,15 @@
+// 客户端
 var chat_server = 'http://' + location.hostname + ':3000';
-var socket = io.connect('http://127.0.0.1:3000');
-console.log('server: ' + chat_server);
+var socket = io.connect(chat_server);
+// console.log('server: ' + chat_server);
 var nicknameList=[];
 
 
 $(window).keydown(function (e) {
 	if (e.keyCode == 116) {
-  		if (!confirm("刷新将会清除所有聊天记录，确定要刷新么？")) {
-    		e.preventDefault();
-  		}
+		// if (!confirm("刷新将会清除所有聊天记录，确定要刷新么？")) {
+  	// 	e.preventDefault();
+		// }
 	}
 });
 
@@ -16,11 +17,24 @@ if(sessionStorage.getItem('nickname')==null)
 {
 	$(".login").show();
 }
-else{	
+else{
 	$(".allChat").show();
 	socket.emit('nickname',sessionStorage.getItem('nickname'));
-	$(".leftChat .myNickname").html("昵称："+sessionStorage.getItem('nickname'));		
+	$(".leftChat .myNickname").html("昵称："+sessionStorage.getItem('nickname'));
 }
+
+function press(e) {
+	e.preventDefault();
+	if(e.keyCode == 13) {
+		check();
+	}
+}
+
+$("#nickname").keydown(function(e) {
+	if(e.keyCode == 13) {
+		check();
+	}
+})
 
 function check(){
 	var nickname=$("#nickname");
@@ -28,29 +42,27 @@ function check(){
 	var errorNickname=$(".errorNickname");
 	var name_len = name.length;
 	if ("" == name) {
-	    errorNickname.text("请填写昵称");
-	    errorNickname.show();
-	    nickname.focus();		    
-    }		    
-    else if (name_len < 4 || name_len > 16) {
-	    errorNickname.text("请填写正确的昵称，应为4到16个字符");
-	    errorNickname.show();		        
-    }
-    else if(nicknameList.indexOf(name)>-1){
-    	errorNickname.text("用户名已存在");
-	    errorNickname.show();	
-	    nickname.focus();
-    }
-    else{
-    	console.log(111);
-    	socket.emit('nickname',$("#nickname").val());		
-    	sessionStorage.setItem('nickname',$("#nickname").val());
-		console.log('Nickname set');
+    errorNickname.text("请填写昵称");
+    errorNickname.show();
+    nickname.focus();
+  }
+  else if (name_len < 4 || name_len > 16) {
+    errorNickname.text("请填写正确的昵称，应为4到16个字符");
+    errorNickname.show();
+  }
+  else if(nicknameList.indexOf(name)>-1){
+  	errorNickname.text("用户名已存在");
+    errorNickname.show();
+    nickname.focus();
+  }
+  else{
+  	socket.emit('nickname',$("#nickname").val());
+  	sessionStorage.setItem('nickname',$("#nickname").val());
 		$(".leftChat .myNickname").html("昵称："+sessionStorage.getItem('nickname'));
-		socket.emit('join',name);		
+		socket.emit('join',name);
 		$(".login").hide();
 		$(".allChat").show();
-    }		      
+  }
 }
 
 socket.on('join',function(data){
@@ -68,7 +80,7 @@ socket.on('nicknames',function(data){
 
 	$('.rightContent ul').html(html);
 	$('.rightChat footer .count').html(count);
-	console.log(html);	
+	console.log(html);
 })
 
 socket.on('quit',function(data){
